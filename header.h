@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <chrono>
+#include <regex>
 
 #define RUTA_ARCHIVO "Oferta_2016_Mod2.txt"
 #define RUTA_ARCHIVO_SALIDA "out.txt"

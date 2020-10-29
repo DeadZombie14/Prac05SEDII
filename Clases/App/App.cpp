@@ -13,7 +13,7 @@ void App::leerArchivo(void) {
     /***
     Variables de almacenamiento de datos temporal.
     ***/
-    long nrc;
+    long nrc, codigoProfesor;
     char st;
     string departamento, area, clave, materia, seccion, edif, aula, profesor, diasSem, fechaInicio, fechaFin, nivel;
     int hrsTeoria, hrsLab, creditos, cupo, ocup, disp, ini, fin;
@@ -21,13 +21,27 @@ void App::leerArchivo(void) {
     while(!archivo.eof()) {
         getline(archivo, linea);
         if (linea.compare("") != 0){ // Si la linea no esta vacia
-            stringstream s(linea);
-            while(getline(s, elemento, ',')) {
-                    datos.push_back(elemento);
+            //linea.erase(remove(linea.begin(), linea.end(), '\"'), linea.end());
+            bool ignorarComa = false;
+            string dato;
+            for (auto car : linea) {
+                if(car != '\"' && car != ',')
+                    dato = dato + car;
+                
+                if (car == '\"')
+                    ignorarComa = !ignorarComa;
+                
+                if(car == ',' && !ignorarComa) {
+                    datos.push_back(dato);
+                    dato = "";
+                }
             }
+            datos.push_back(dato);
+
             stringstream nrc_(datos[0]);
             nrc_ >> nrc;
             st = datos[1].at(0);
+            string dp = datos[2];
             departamento = datos[2];
             area = datos[3];
             clave = datos[4];
@@ -52,15 +66,23 @@ void App::leerArchivo(void) {
             diasSem = datos[15] + "," +  datos[16] + "," + datos[17] + "," + datos[18] + "," + datos[19] + "," + datos[20];
             edif = datos[21];
             aula = datos[22];
-            profesor = datos[23] + ", "+ datos[24];
-            fechaInicio = datos[25];
-            fechaFin = datos[26];
-            nivel = datos[27] + datos[28];
-            // TODO nivel
-            // Solucion: ignorar una cant precisa de comas
+            string datosProfesor = datos[23];
+            smatch matches;
+            regex_match(datosProfesor,matches,regex("(.+)\\(([0-9]+?)\\)"));
+            // profesor = datosProfesor;
+            profesor = matches[1];
+            if(matches[2] != "") {
+                stringstream codp(matches[2]);
+                codp >> codigoProfesor;
+            } else {
+                codigoProfesor = 0;
+            }
+            fechaInicio = datos[24];
+            fechaFin = datos[25];
+            nivel = datos[26];
             OfertaAcademica temp(nrc, st, departamento, area, clave, materia, hrsTeoria, 
             hrsLab, seccion, creditos, cupo, ocup, disp, ini, fin, diasSem, edif, 
-            aula, profesor, fechaInicio, fechaFin);
+            aula, profesor, codigoProfesor, fechaInicio, fechaFin, nivel);
             datosOferta.push_back(temp);
             datos.clear();
         }

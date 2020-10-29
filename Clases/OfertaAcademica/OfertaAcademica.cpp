@@ -2,7 +2,7 @@
 
 OfertaAcademica::OfertaAcademica(long nrc_, char st_, string departamento_, string area_, string clave_, string materia_, int hrsTeoria_, 
         int hrsLab_, string seccion_, int creditos_, int cupo_, int ocup_, int disp_, int ini_, int fin_, string diasSem_, string edif_, 
-        string aula_, string profesor_, string fechaInicio_, string fechaFin_) {
+        string aula_, string profesor_, long codigoProfesor_, string fechaInicio_, string fechaFin_, string nivel_) {
         nrc = nrc_;
         st = st_;
         departamento = departamento_;
@@ -22,8 +22,10 @@ OfertaAcademica::OfertaAcademica(long nrc_, char st_, string departamento_, stri
         edif = edif_;
         aula = aula_;
         profesor = profesor_;
+        codigoProfesor = codigoProfesor_;
         fechaInicio = fechaInicio_;
         fechaFin = fechaFin_;
+        nivel = nivel_;
 }
 
 void OfertaAcademica::imprimirDatos(void) {
@@ -46,8 +48,10 @@ void OfertaAcademica::imprimirDatos(void) {
     cout << "EDIF :" << edif << endl;
     cout << "AULA :" << aula << endl;
     cout << "PROFESOR :" << profesor << endl;
+    cout << "CODIGO PROFESOR :" << codigoProfesor << endl;
     cout << "FECHA_INICIO :" << fechaInicio << endl;
     cout << "FECHA_FIN :" << fechaFin << endl;
+    cout << "NIVEL :" << nivel << endl;
 }
 
 void OfertaAcademica::modificarArchivo(fstream *archivo) {
@@ -69,9 +73,10 @@ void OfertaAcademica::modificarArchivo(fstream *archivo) {
     *archivo << diasSem << ","; // < -------
     *archivo << edif << ",";
     *archivo << aula << ",";
-    *archivo << profesor << ","; // < -------
+    *archivo << profesor << "(" << codigoProfesor << ")" << ","; // < -------
     *archivo << fechaInicio << ",";
-    *archivo << fechaFin << "\n";
+    *archivo << fechaFin << ",";
+    *archivo << nivel << "\n";// < -------
 }
 
 OfertaAcademica::~OfertaAcademica() {

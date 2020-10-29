@@ -34,7 +34,7 @@ int main() {
     app.leerArchivo();
     app.guardarArchivo();
     app.contarDatos();
-    // app.imprimirDatos();
+    app.imprimirDatos();
 
     cout << "Presiona entrar para salir...";
     cin.get();
